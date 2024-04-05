@@ -1,0 +1,4 @@
+#Thu Apr 04 23:22:50 IST 2024
+base.0=E\:\\clling_api\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
