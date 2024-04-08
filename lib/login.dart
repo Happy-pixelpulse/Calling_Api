@@ -35,7 +35,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
 
 import 'HomePage.dart';
 //import 'HomePage.dart';
@@ -48,8 +48,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  List<dynamic> Users = [];
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -74,10 +72,11 @@ class _LoginState extends State<Login> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 20,right: 20,top: 80),
+        key: _formKey,
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
               controller: emailController,
@@ -132,18 +131,32 @@ class _LoginState extends State<Login> {
                 ),
                 backgroundColor: Color.alphaBlend(Colors.red, Colors.redAccent),
               ),
-              onPressed: (){
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HomePage()),
-                );
-              },
+              onPressed: login,
               child: const Text('login'),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void login() async {
+    const url = 'https://reqres.in/api/login';
+    final uri = Uri.parse(url);
+    final response = await http.post(uri,
+        body: jsonDecode(
+            '{"email": "eve.holt@reqres.in","password": "cityslicka"}'));
+    final body = response.body;
+    print(body);
+    final json = jsonDecode(body);
+    if (json['token'] != null) {
+      String token = json['token'];
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      print('Error');
+    }
   }
 }

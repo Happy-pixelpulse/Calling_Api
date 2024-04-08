@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
+    print(body);
     final json = jsonDecode(body);
     setState(() {
       users = json['data'];
